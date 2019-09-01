@@ -1,0 +1,5 @@
+https://www.w3schools.com/js/js_json_intro.asp
+http://www.json.org/json-es.html
+https://docs.oracle.com/javaee/7/api/javax/json/package-summary.html
+
+

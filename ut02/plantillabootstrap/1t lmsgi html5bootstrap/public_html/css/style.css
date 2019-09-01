@@ -1,0 +1,90 @@
+/*
+ * Estillos css para el ejercicio 1
+ */
+
+/*
+ *  Clases genericas
+ *  Estilos genericos, resets o estilos para
+ *  evitar repetir estilos a lo largo del documento.
+ */
+h1,h2,h3{ margin: 0;}
+h1{ font-size: 1em;}
+h2{ font-size: 1.7em;}
+h3{ font-size: 1.2em;}
+
+h2,h3{ font-weight: bold;}
+
+p{ margin:0;}
+ul{ margin: 0;}
+
+.borde_grueso,.borde_fino{border-radius: 8px;}
+.borde_fino{ 
+    border: 1px solid black;    
+}
+.borde_grueso{ 
+    border: 5px solid red;
+}
+.text-center{ text-align: center;}
+.text-right{ text-align: right;}
+.text-justify{ text-align: justify;}
+
+.negro{ border-color: black;}
+.verde{ border-color: green;}
+.rojo{ border-color: red;}
+
+/*
+ * Asignación de colores con elementos agrupados o genericos
+ */
+header{ color: blue;}
+article.articulo section, article.articulo footer{ color: red;}
+
+/*
+ *  Estructura
+ *  Estilos estructurales.
+ */
+header#cabecera{
+    color: blue;
+    text-align: center;
+}
+
+section#contenido{
+    width: 73%;
+    float: left;
+    padding: 1%;
+    margin-top: 10px;
+}
+section#contenido header#cab_noticias{
+    padding: 10px 0;    
+}
+
+article.articulo, article.articulo header{ padding: 1%; border-radius: 0;}
+article.articulo header, article.articulo section, article.articulo footer{ 
+    padding: 2% 0;
+}
+
+.articulo+.articulo{ margin-top: 1%;}
+
+aside#lateral{
+    width: 20%;
+    float: right;
+    background-color: yellow;
+    padding: 7px 7px 10px 0;
+    margin-top: 20px;
+}
+aside#lateral ul#menu{}
+aside#lateral ul#menu li{
+    display: block;
+    border: 5px solid black;
+    margin: 4px 0 0 0;
+    width: 70%;
+    float: right;
+}
+
+footer#piepag_1{
+    clear: left;    
+}
+footer#piepag_1, footer#piepag_2{ padding-bottom: 2%;}
+footer#piepag_2{ margin-top: 1%;}
+
+
+

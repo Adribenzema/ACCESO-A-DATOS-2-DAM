@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Histograma Letras</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <div id="container" style="width: 100%;">
+            <canvas id="myChart"></canvas>
+        </div>    
+        <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create bar, line, 
+                type: 'line',
+
+                // The data for our dataset
+                data: {
+                    labels: ["A", "B", "C", "D", "E", "F", "G"],
+                    datasets: [{
+                            label: "Histograma Letras",
+                            backgroundColor: 'rgb(255, 0, 132)',
+                            borderColor: 'rgb(255, 99, 132)',
+                            data: [50, 10, 5, 2, 20, 3, 5],
+                        }]
+                },
+
+                // Configuration options go here
+                options: {}
+            });
+        </script>
+
+    </body>
+
+</html>
+

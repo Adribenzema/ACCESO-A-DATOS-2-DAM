@@ -1,0 +1,12 @@
+[{
+        "titulo": "Sueños IA",
+        "totalPaginas": 210,
+        "precio": 10,
+        "autores": [{
+                "nombre": "Javier",
+                "apellido": "Perez"
+            }, {
+                "nombre": "María",
+                "apellido": "Rodriguez"
+            }]
+    }]
