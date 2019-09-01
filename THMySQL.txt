@@ -1,0 +1,370 @@
+Mysql
+
+CREATE DATABASE prueba;
+
+USE prueba;
+
+DROP DATABASE prueba;
+
+CREATE DATABASE prueba CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+
+CREATE DATABASE tiendita;
+
+USE tiendita;
+
+create table productos(
+idProducto INT auto_increment primary KEY,
+nombre VARCHAR(50) NOT NULL,
+precio DECIMAL(10,2) NOT NULL,
+fecha_alta DATE DEFAULT '0000-00-00'
+);
+
+SHOW TABLES;
+
+SHOW columns FROM productos;
+
+show create table productos;
+
+rename table productos to producto;
+
+alter table producto add existencias int not null;
+
+alter table producto drop existencias;
+
+alter table producto change precios precio DECIMAL(18,2) not null;
+
+DROP table productos;
+
+create table categoria(
+id INT auto_increment primary KEY,
+nombre VARCHAR(50) NOT NULL);
+
+RESTRICCIONES:
+
+restrict --> impide realizar modificaciones que atentan contra la integridad referencial. 
+
+cascade --> borra los registros de la tabla dependiente cuando se borra el registro de la tabla principal.
+
+set null --> establece null el valor de la clave secundaria cuado se elimina el registro en la tabla principal o se modifica el valor del campo referenciado.
+
+no action --> inhabilita el efecto de la restriccion, permitiendo que se efectúe el cambio en la base de datos.
+
+alter table productos add idCategoria Int not null;
+
+show columns from productos;
+
+alter table productos add constraint fk_CatPro foreign key (idCategoria) references categoria (id)
+ on delete cascade  on update cascade;
+ 
+alter table productos drop foreign key fk_CatPro;
+
+alter table productos drop column idCategoria;
+
+cuando es una relacionn n:m --> hacer tabla intermedia
+
+create table proveedores(
+id INT auto_increment primary KEY NOT NULL,
+nombre VARCHAR(50) NOT NULL);
+
+create table detalle_producto_proveedores(
+id INT auto_increment primary KEY NOT NULL,
+nombre VARCHAR(50) NOT NULL);
+
+¿cómo obtener el EER después de haber creado una Base de Datos? 1.- Abre Mysql Workbeanch 2.- Busca y oprime en las opciones "Database" -> 
+"Reverse Engine" 3.- Configura las opciones (según la dirección del servidor donde tengas la BD que quieras obtener su eer
+
+*************************-----------------------------------------------------------------*************************
+*************************-----------------------------------------------------------------*************************
+
+----- INSERTAR FILAS
+
+use tiendita;
+
+insert into categoria values (NULL,'Bebidas');
+
+insert into categoria (nombre) values ('Aceites');
+
+insert into categoria (nombre) values ('Detergentes'),('Dulce'),('Frituras');
+
+insert into categoria SET  nombre='Helados';
+
+select * from categoria;
+
+show columns from productos;
+
+insert into productos (nombre,precio, idCategoria) VALUES ('Refresco',8.50,1);
+
+insert into productos (nombre,precio, fecha_alta,idCategoria) VALUES ('Paleta',8.50,'2019-04-16',1);
+
+insert into productos (nombre,precio, fecha_alta,idCategoria) VALUES ('cHANCLA',108.50,CURDATE(),2);
+
+select * from productos;
+
+*************************-----------------------------------------------------------------*************************
+*************************-----------------------------------------------------------------*************************
+
+---- UPDATE
+
+UPDATE CATEGORIA SET nombre='Modificado' WHERE ID=1;
+
+select *from categoria;
+
+UPDATE productos SET nombre='Refrescos 1', precio=12.60 WHERE idProducto=1;
+
+ALTER TABLE productos ADD COLUMN existencia int not null;
+
+UPDATE productos SET existencia=existencia+5 WHERE idProducto=1;
+
+UPDATE productos SET existencia=existencia-2 WHERE idProducto=1;
+
+UPDATE productos SET existencia=existencia*2 WHERE idProducto=1;
+
+UPDATE productos SET precio=replace(precio,8.50,19.30);
+
+UPDATE CATEGORIA SET nombre='Modificado' WHERE ID=1;
+
+select *from categoria;
+
+UPDATE productos SET nombre='Refrescos 1', precio=12.60 WHERE idProducto=1;
+
+ALTER TABLE productos ADD COLUMN existencia int not null;
+
+UPDATE productos SET existencia=existencia+5 WHERE idProducto=1;
+
+UPDATE productos SET existencia=existencia-2 WHERE idProducto=1;
+
+UPDATE productos SET existencia=existencia*2 WHERE idProducto=1;
+
+UPDATE productos SET precio=replace(precio,8.50,19.30);
+
+UPDATE productos SET nombre=replace(nombre,"leta","letita"); //PARA MODIFICAR EL FINAL DE UNA PALABRA
+
+select * from productos;
+
+*************************-----------------------------------------------------------------*************************
+*************************-----------------------------------------------------------------*************************
+
+--- ELIMINAR FILAS
+
+DELETE FROM productos WHERE idProducto=3;
+DELETE FROM CATEGORIA WHERE id=1;
+
+INSERT INTO PRODUCTOS (nombre,precio,fecha_alta,idCategoria,existencia) 
+VALUES ('Refresco',10,CURDATE(),2,10);
+
+set foreign_key_checks=0;//ojo con estas tres instrucciones
+truncate table productos;//ojo con estas tres instrucciones
+set foreign_key_checks=1;//ojo con estas tres instrucciones
+
+SELECT * FROM CATEGORIA;
+SELECT * FROM PRODUCTOS;
+
+*************************-----------------------------------------------------------------*************************
+*************************-----------------------------------------------------------------*************************
+
+---- CONSULTAS
+
+Lanzar un script --> File --> Run Script --> seleccionamos tiendita.sql --> Default Schema Name --> poner tiendita (nombre bbdd)
+--> Default Character Set --> utf8 y run
+
+Luego--> use tiendita;
+
+use tiendita;
+
+SELECT * FROM CATEGORIA;
+
+SELECT * FROM PRODUCTOS;
+
+SELECT nombre as Nombre, precio As Precio, existencia, idCategoria FROM PRODUCTOS where idCategoria =3;
+
+SELECT nombre as Nombre, precio As Precio, existencia, idCategoria FROM PRODUCTOS where existencia>10;
+SELECT nombre as Nombre, precio As Precio, existencia, idCategoria FROM PRODUCTOS where existencia<10;
+
+SELECT COUNT(idProducto) AS Cantidad, idCategoria FROM productos GROUP BY idCategoria;
+
+SELECT min(existencia) AS existencia_minina, max(existencia) AS existencia_maxima FROM productos;
+
+SELECT * FROM PRODUCTOS LIMIT 5;
+SELECT * FROM PRODUCTOS LIMIT 3,10;
+
+SELECT * FROM PRODUCTOS order by nombre ASC;
+SELECT * FROM PRODUCTOS order by nombre DESC;
+
+SELECT * FROM PRODUCTOS order by nombre ASC,existencia ASC;
+
+*************************-----------------------------------------------------------------*************************
+*************************-----------------------------------------------------------------*************************
+
+---- OPERADORES Y SUBCONSULTAS
+
+select * from productos WHERE idCAtegoria=1 and precio=10;
+
+select * from productos WHERE idCAtegoria=1 or precio=10;
+
+select * from productos WHERE idCAtegoria=1;
+
+select * from productos WHERE idCAtegoria!=1;
+
+select * from productos WHERE idCAtegoria<>1;
+
+select * from productos WHERE idCAtegoria>=3;
+
+select * from productos WHERE precio is null;
+select * from productos WHERE precio is not null;
+
+
+select * from productos WHERE precio not between 5 and 10;
+select * from productos WHERE precio between 5 and 10;
+select * from productos WHERE precio >= 5 and precio <= 10;
+
+select * from productos WHERE precio IN(5,6,7,8,9,10);
+select * from productos WHERE precio NOT IN(5,6,7,8,9,10);
+
+select * from productos WHERE DATE(fecha_alta) between '2015-01-01' and '2016-07-24';
+
+select * from productos WHERE precio =5+5;
+select * from productos WHERE precio =5*2;
+select * from productos WHERE precio =5/1;
+
+select * from productos WHERE nombre LIKE 'LIMONADA';
+select * from productos WHERE nombre not LIKE 'LIMONADA';
+select * from productos WHERE nombre LIKE 'LIMON%'; //que empiecen con limón
+select * from productos WHERE nombre LIKE '%LIMON'; //que acabe con limón
+select * from productos WHERE nombre LIKE '%LIMON%'; //que lleve limón
+
+select * from productos WHERE idCAtegoria=2 and precio >10 and existencia between 5 and 20 and fecha_alta is not null;
+select * from productos WHERE idCAtegoria in(select id from categoria where id>2);
+
+
+*************************-----------------------------------------------------------------*************************
+*************************-----------------------------------------------------------------*************************
+
+
+---- CONSULTAS MULTITABLA
+
+use tiendita;
+
+select p.nombre, p.precio, p.existencia, c.nombre from productos as p inner join categoria as c on p.idcategoria=c.id where idcategoria=2;
+
+select p.nombre, p.precio, p.idcategoria, t.nombre from productos as p left join temp as t on p.idcategoria=t.id;
+
+select p.nombre, p.precio, p.idcategoria, t.nombre from productos as p right join temp as t on p.idcategoria=t.id;
+
+
+select p.nombre as producto, c.nombre as categoria from productos as p inner join categoria as c on p.idcategoria=c.id;
+
+select p.nombre as producto, c.nombre as categoria, prov.nombre as nom_proveedor from productos as p 
+inner join categoria as c on p.idcategoria=c.id
+inner join detalle_producto_proveedor as det on p.idcategoria=det.id
+inner join proveedores as prov on det.id=prov.id;
+
+select p.nombre as producto, c.nombre as categoria, prov.nombre as nom_proveedor from productos as p 
+inner join categoria as c on p.idcategoria=c.id
+inner join detalle_producto_proveedor as det on p.idcategoria=det.id
+inner join proveedores as prov on det.id=prov.id where p.existencia > 5;
+
+select * from proveedores UNION select * from categoria; //solo podremos usar UNION cuando el número de columnas sea igual en ambas tablas
+
+select * from productos UNION select * from categoria; //08:08:33	select * from productos UNION select * from categoria	Error Code: 1222. The used SELECT statements have a different number of columns	0.000 sec
+
+//Para que funcione lo anterior tendríamos que seleccionas las columnas que se repiten en productos
+
+select nombre, idproducto from productos UNION select * from categoria;
+
+
+*************************-----------------------------------------------------------------*************************
+*************************-----------------------------------------------------------------*************************
+
+
+---- VISTAS, PROCEDIMIENTOS ALMACENADOS Y TRIGGERS
+//VISTAS TABLAS VIRTUALES QUE CONTIENEN LOS RESULTADOS DE UNA CONSULTA, SOLO SE GUARDA LA CONSULTA, NO LOS DATOS
+
+CREATE VIEW 
+vista_productos_categoria AS
+SELECT p.idproducto, p.nombre, p.precio, p.existencia, c.nombre as nombre_categoria
+FROM productos as p
+inner join categoria as c on p.idCategoria=c.id;
+
+CREATE VIEW 
+vista_productos_escaso AS
+SELECT *
+FROM productos where existencia<10;
+
+//Para ver una vista
+SELECT *
+FROM vista_productos_escaso;
+
+SELECT *
+FROM vista_productos_categoria;
+
+//Para modificar una vista, es mejor borrarla y hacer una nueva
+alter view vista_productos_categoria as select p.idproducto,p.nombre,p.fecha_alta, c.nombre as categoria
+from productos as p 
+inner join categoria as c on p.idcategoria=c.id;
+
+SELECT *
+FROM vista_productos_escaso;
+
+SELECT *
+FROM vista_productos_categoria;
+
+//Ver vista
+show create view vista_productos_categoria;
+show create view vista_productos_escaso;
+
+//Borrar vista
+drop view vista_productos_categoria;
+drop view vista_productos_escaso;
+
+//// PROCEDIMIENTOS ALMACENADOS
+
+conjunto instrucciones que se guarda en e servidor para luego usarlas
+
+delimiter //
+
+create procedure productoXcategoria (in id int)
+begin
+select * from productos where idcategoria=id;
+
+end //
+
+delimiter ;
+
+//Hay que respetar los espacios detrás de delimiter // y end // en este caso no es un comentario.
+
+Para llamarlo CALL nombre procedimiento
+
+call productoXcategoria(3);
+
+show create procedure productoXcategoria;
+
+drop procedure productoXcategoria;
+
+TRIGGERS 
+
+delimiter |
+
+create trigger tempTrigger before insert on categoria
+
+for each row begin
+insert into temp(nombre) value (new.nombre);
+
+end |
+
+insert into categoria (nombre) value ('trigger');
+
+//comprobamos
+select * from categoria;
+select * from tiendita.temp;
+
+//ver como se crean los triggers
+show create trigger tempTrigger;
+
+//Ver los triggers que tenemos
+show triggers;
+
+//Borrar los triggers que tenemos
+drop triggers;
+
+*************************-----------------------------------------------------------------*************************
+*************************-----------------------------------------------------------------*************************
